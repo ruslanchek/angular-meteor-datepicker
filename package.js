@@ -1,7 +1,7 @@
 // package metadata file for Meteor.js
 var packageName = 'rshashkov:angular-meteor-datepicker';
 var where = 'client'; // where to install: 'client' or 'server'. For both, pass nothing.
-var version = '0.0.1';
+var version = '0.0.2';
 var summary = 'AngularJS datepicker directives';
 var gitLink = 'https://github.com/ruslanchek/angular-meteor-datepicker';
 var documentationFile = 'README.md';

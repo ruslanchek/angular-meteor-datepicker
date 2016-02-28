@@ -1,128 +1,73 @@
-# AngularJS datepicker directives
+# angular-datepicker
 
-#### Requirements
+**Warning**: This project is no longer maintained. Use at your own risk!
 
--  Angular v1.2+
--  MomentJS
--  Moment Timezone (If timezones are being used)
+The mobile-friendly, responsive, and lightweight Angular.js date &amp; time input picker. Perfect for Ionic apps!
 
-## Usage Example
+![datepicker](https://dl.dropboxusercontent.com/u/16304603/datepicker.PNG), ![datepicker](https://dl.dropboxusercontent.com/u/16304603/timepicker.PNG)
 
-[Live demo](https://rawgithub.com/g00fy-/angular-datepicker/master/app/index.html)
+This is basically a [pickadate.js](https://github.com/amsul/pickadate.js) fork that completely removes the jQuery dependency and adds Angular.js directives.
 
-## New features
+### Bower
 
-This fork of angular-datepicker contains several features.
+`bower install angular-native-picker`
 
-### Timezone Support
+### Usage
 
-* The directive will work with or without a specified timezone.
-* If the timezone is known, it can be assigned to the datepicker via the `timezone` attribute.
-* If no timezone is provided, then the local time will be used.
+Include `build/angular-datepicker.js` in your application:
 
-##### No timezone information
-
-```html
-<div date-picker></div>
+```HTML
+<script src="angular-datepicker.js"></script>
 ```
 
-##### Specific timezone (London, UK)
+Include CSS files in your application:
 
-```html
-<div date-picker timezone="Europe/London"></div>
+```HTML
+<link rel="stylesheet" href="build/themes/default.css"/>
+<link rel="stylesheet" href="build/themes/default.date.css"/>
+<link rel="stylesheet" href="build/themes/default.time.css"/>
 ```
 
+Note: for usage within a modal the default (not classic) CSS files are recommended.
 
-##### Specific timezone (Hong Kong, CN)
+Add the module `angular-datepicker` as a dependency to your app module:
 
-```html
-<div date-picker timezone="Asia/Hong_Kong"></div>
+```JavaScript
+var myapp = angular.module('myapp', ['angular-datepicker']);
 ```
 
+To create a date or time picker, add the `pick-a-date` or `pick-a-time` directive to your input tag:
 
-### Maximum / minimum dates:
-
-* These attributes restrict the dates that can be selected.
-* These work differently from the original `min-date` and `max-date` attributes, which they replace.
-* The original attributes allow selecting any dates and just mark the input as invalid.
-* With these attributes, if a date in the picker is outside of the valid range, then it will not be selectable.
-
-##### Minimum date:
-
-```html
-<input date-time min-date="minDate">
+```HTML
+<input type="text" pick-a-date="date" placeholder="Select Date" /> {{ date }}
+<input type="text" pick-a-time="time" placeholder="Select Time" /> {{ time }}
 ```
 
-##### Maximum date:
-
-```html
-<input date-time max-date="maxDate">
-```
-
-##### Minimum and maximum date:
-
-```html
-<input date-time min-date="minDate" max-date="maxDate">
-```
-
-### Date format (for input fields):
-
-* A custom format for a date can be assigned via the `format` atribute.
-  * This format will be used to display the date on an input field.
-  * If not provided, a default format will be used.
-  * See: [format options](http://momentjs.com/docs/#/displaying/format/)
-
-```html
-<input date-time format="yyyy-MM-dd HH:mm">
-```
-
-
-### Callback on date change
-
-* Adding a `date-change` attribute containing a function name will cause this function to be called when the date changes in the picker.
-
-```html
-<input date-time date-change="changeDate">
-```
-
-### Update events
-
-* An event can be broadcast from the parent scope which will update specific pickers with new settings. The settings which can be changed are:
-  * `minDate`: Earliest selectable date for this picker. Disabled if this value is falsy.
-  * `maxDate`: Latest selectable date for this picker. Disabled if this value is falsy.
-  * `minView`: Minimum zoom level for date/time selection. Disabled if this value is falsy.
-  * `maxView`: Maximum zoom level for date/time selection. Disabled if this value is falsy.
-  * `view`: Default zoom level for date/time selection. Set to default value if this value is falsy.
-  * `format`: Format string used to display dates on the input field. Set to default value if this value is falsy.
-    * See: [format options](http://momentjs.com/docs/#/displaying/format/)
-	* This option cannot be used on the `date-picker` directive directly, it must be used on a `date-time` input field.
-* The possible for the `view`, `minView` and `maxView` fields are:
-  * `year`, `month`, `date`, `hours`, `minutes`.
-* The event is targeted at specific pickers using their `ID` attributes.
-  * If a picker exists with the same `ID` then the information in this picker will be updated.
-  * A single `ID` can be used, or an array of `ID`s
-
-#### Create picker with ID
-
-```html
-<input date-time id="pickerToUpdate">
-```
-
-#### Update one picker.
+You can also provide an options object to the directive which will be passed
+into the `pickadate` or `pickatime` constructor.
 
 ```javascript
-$scope.$broadcast('pickerUpdate', 'pickerToUpdate', {
-	format: 'D MMM YYYY HH:mm',
-	maxDate: maxSelectableDate, //A moment object, date object, or date/time string parsable by momentjs
-	minView: 'hours',
-	view: false //Use default
-});
+// somewhere in your controller
+$scope.options = {
+  format: 'yyyy-mm-dd', // ISO formatted date
+  onClose: function(e) {
+    // do something when the picker closes   
+  }
+}
 ```
 
-#### Update multiple pickers.
-
-```javascript
-$scope.$broadcast('pickerUpdate', ['pickerToUpdate', 'secondPickerToUpdate'], {
-	format: 'lll'
-});
+```HTML
+<input type="text" pick-a-date="date" pick-a-date-options="options" /> {{ date }}
+<input type="text" pick-a-time="time" pick-a-time-options="options" /> {{ time }}
 ```
+
+If you don't need to provide any callbacks (like `onClose`) you can specify the
+options object as an angular expression:
+
+```HTML
+<input type="text" pick-a-date="date" pick-a-date-options="{ format: 'yyyy-mm-dd' }" />
+```
+
+For a full list of available options please refer to the pickadate documentation
+for [datepicker options](http://amsul.ca/pickadate.js/date.htm) and
+[timepicker options](http://amsul.ca/pickadate.js/time.htm).
